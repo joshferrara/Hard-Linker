@@ -2,7 +2,7 @@
 
 A native macOS application for creating hard links between folders using the `cp -al` command. Built with SwiftUI and packaged as a complete .app bundle.
 
-![Hard Linker App Icon](AppIcon.iconset/icon_256x256.png)
+![Hard Linker App Icon](Icon-iOS-Default-1024x1024@1x.png)
 
 ## Features
 
