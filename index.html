@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hard Linker - macOS Hard Link Creator</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #141414;
+            --bg-card: #1a1a1a;
+            --border: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --text-accent: #64ffda;
+            --accent: #00d4aa;
+            --accent-hover: #00b894;
+            --gradient: linear-gradient(135deg, #00d4aa 0%, #0099cc 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            padding: 2rem 0;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 212, 170, 0.3);
+        }
+
+        .header-text h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .header-text .tagline {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 4rem 0;
+            text-align: center;
+            background: radial-gradient(ellipse at center, rgba(0, 212, 170, 0.1) 0%, transparent 70%);
+        }
+
+        .hero h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .hero .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: var(--gradient);
+            color: var(--bg-primary);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 212, 170, 0.4);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 212, 170, 0.6);
+        }
+
+        /* Code Block */
+        .code-demo {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 3rem auto;
+            max-width: 600px;
+            font-family: 'JetBrains Mono', monospace;
+            position: relative;
+        }
+
+        .code-demo::before {
+            content: "Terminal";
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: var(--bg-primary);
+            color: var(--text-accent);
+            padding: 0 10px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .code-line {
+            margin: 0.5rem 0;
+            color: var(--text-secondary);
+        }
+
+        .code-line .prompt {
+            color: var(--text-accent);
+        }
+
+        .code-line .command {
+            color: var(--text-primary);
+        }
+
+        /* Features Grid */
+        .features {
+            padding: 4rem 0;
+            background: var(--bg-secondary);
+        }
+
+        .features h3 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--text-primary);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+            border-color: var(--accent);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .feature-card h4 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Tech Details */
+        .tech-details {
+            padding: 4rem 0;
+        }
+
+        .tech-details h3 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .tech-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .tech-label {
+            color: var(--text-accent);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .tech-value {
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            color: var(--text-secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .hero h2 {
+                font-size: 2rem;
+            }
+
+            .header-text h1 {
+                font-size: 2rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .feature-card:nth-child(1) { animation-delay: 0.1s; }
+        .feature-card:nth-child(2) { animation-delay: 0.2s; }
+        .feature-card:nth-child(3) { animation-delay: 0.3s; }
+        .feature-card:nth-child(4) { animation-delay: 0.4s; }
+
+        /* App Preview Section */
+        .app-preview {
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .app-preview h3 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--text-primary);
+        }
+
+        .app-preview .description {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .screenshot-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .screenshot-container::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: var(--gradient);
+            border-radius: 18px;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        .app-screenshot {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <img src="Icon-iOS-Default-1024x1024@1x.png" alt="Hard Linker Icon" class="logo">
+                <div class="header-text">
+                    <h1>Hard Linker</h1>
+                    <div class="tagline">macOS // Hard Link Creator</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h2>Space-Efficient File Linking</h2>
+                <p class="subtitle">
+                    Create hard links between folders on macOS with a native SwiftUI interface.
+                    Perfect for developers, power users, and system administrators.
+                </p>
+                <a href="https://github.com/joshferrara/Hardlinker/releases" class="cta-button">
+                    Download Latest Release
+                </a>
+            </div>
+        </section>
+
+        <section class="container">
+            <div class="code-demo">
+                <div class="code-line">
+                    <span class="prompt">$</span> <span class="command">cp -al /source/folder /destination/folder</span>
+                </div>
+                <div class="code-line">
+                    <span style="color: var(--text-accent);"># Hard Linker automates this process with a drag & drop GUI</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="app-preview">
+            <div class="container">
+                <h3>Native macOS Interface</h3>
+                <p class="description">
+                    Clean, intuitive SwiftUI design that feels right at home on macOS.
+                    Drag folders directly into the app or use the file picker for precise control.
+                </p>
+                <div class="screenshot-container">
+                    <img src="app-screenshot.png" alt="Hard Linker App Interface" class="app-screenshot">
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <h3>Built for Power Users</h3>
+                <div class="features-grid">
+                    <div class="feature-card fade-in">
+                        <div class="feature-icon">🎯</div>
+                        <h4>Drag & Drop Interface</h4>
+                        <p>Intuitive macOS-native interface. Simply drag source folders and destination into the app, or use the built-in file picker for precise selection.</p>
+                    </div>
+
+                    <div class="feature-card fade-in">
+                        <div class="feature-icon">⚡</div>
+                        <h4>Multiple Sources</h4>
+                        <p>Link multiple source folders to a single destination in one operation. Perfect for organizing complex directory structures efficiently.</p>
+                    </div>
+
+                    <div class="feature-card fade-in">
+                        <div class="feature-icon">🔗</div>
+                        <h4>True Hard Links</h4>
+                        <p>Creates actual hard links using <code>cp -al</code>, not symbolic links. Files remain accessible even if original paths change or are deleted.</p>
+                    </div>
+
+                    <div class="feature-card fade-in">
+                        <div class="feature-icon">💾</div>
+                        <h4>Zero Space Overhead</h4>
+                        <p>Hard links reference the same disk data, consuming virtually no additional storage space while providing multiple access points to your files.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="tech-details">
+            <div class="container">
+                <h3>Technical Specifications</h3>
+                <div class="tech-grid">
+                    <div class="tech-item">
+                        <div class="tech-label">LANGUAGE</div>
+                        <div class="tech-value">Swift 5.9+</div>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-label">FRAMEWORK</div>
+                        <div class="tech-value">SwiftUI</div>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-label">MINIMUM OS</div>
+                        <div class="tech-value">macOS 13.0</div>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-label">ARCHITECTURE</div>
+                        <div class="tech-value">Universal Binary</div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 3rem; text-align: center;">
+                    <h4 style="margin-bottom: 1rem; color: var(--text-accent);">Common Use Cases</h4>
+                    <div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; color: var(--text-secondary);">
+                        <span>• Backup Solutions</span>
+                        <span>• Development Environments</span>
+                        <span>• Media Organization</span>
+                        <span>• Testing Workflows</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2025 Josh Ferrara. Built with SwiftUI for macOS power users.</p>
+                <p style="margin-top: 0.5rem;">
+                    <a href="https://github.com/joshferrara/Hardlinker" style="color: var(--text-accent); text-decoration: none;">
+                        View Source Code →
+                    </a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Add fade-in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
